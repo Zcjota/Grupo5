@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagrama GAM - Auditorías</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: white;
+            margin: 20px;
+            text-align: center;
+        }
+        .container {
+            width: 100%;
+            margin: auto;
+            overflow-x: auto;
+        }
+        .section-title {
+            background-color: #0073e6;
+            color: white;
+            padding: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: left;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .section-content {
+            display: none;
+            overflow: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background-color: #222;
+        }
+        th, td {
+            border: 1px solid #444;
+            padding: 10px;
+            text-align: center;
+            min-width: 80px;
+        }
+        th {
+            background-color: #005bb5;
+            color: white;
+        }
+        .fecha {
+            font-size: 14px;
+            color: #00ff00;
+            font-weight: bold;
+        }
+        .encargado {
+            font-size: 12px;
+            color: #ffa500;
+            font-style: italic;
+        }
+        .flecha {
+            display: inline-block;
+            height: 5px;
+            background-color: #00ff00;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Diagrama GAM - Auditorías</h2>
+    <div class="container" id="auditSections"></div>
+
+    <script>
+        const riesgosData = [
+            {
+                seccion: "Autorización de Transferencias Externas",
+                riesgos: [
+                    {
+                        proceso: "Riesgo 1: Errores en la verificación de campos obligatorios",
+                        actividad: "- Revisión de los registros de transferencias.<br>- Validación de los controles en el sistema de autorización.<br>- Pruebas de cumplimiento con la normativa bancaria.",
+                        fechas: [{ inicio: 1, fin: 2 }],
+                        encargado: "Auditoría Interna"
+                    },
+                    {
+                        proceso: "Riesgo 2: Modificación maliciosa de datos",
+                        actividad: "- Análisis forense de registros de transferencias.<br>- Revisión de logs del sistema en busca de alteraciones.<br>- Pruebas de seguridad en la transmisión de datos.",
+                        fechas: [{ inicio: 3, fin: 3 }, { inicio: 5, fin: 6 }],
+                        encargado: "Seguridad Informática"
+                    },
+                    {
+                        proceso: "Riesgo 3: Falta de validación en el formato de datos",
+                        actividad: "- Prueba de integridad de datos.<br>- Simulación de transferencias con datos incorrectos.<br>- Entrevistas con el equipo de TI.",
+                        fechas: [{ inicio: 7, fin: 8 }],
+                        encargado: "Soporte Técnico"
+                    }
+                ]
+            },
+            {
+                seccion: "Captura de Errores Operativos",
+                riesgos: [
+                    {
+                        proceso: "Riesgo 1: Identificación incorrecta de errores operativos",
+                        actividad: "- Revisión de reportes de fallos.<br>- Análisis de patrones en los errores detectados.<br>- Pruebas de verificación de errores manuales y automáticos.",
+                        fechas: [{ inicio: 1, fin: 2 }, { inicio: 4, fin: 5 }],
+                        encargado: "Operaciones Bancarias"
+                    },
+                    {
+                        proceso: "Riesgo 2: Falta de registro de errores menores",
+                        actividad: "- Implementación de un sistema de log detallado.<br>- Auditoría de registros históricos de errores.<br>- Evaluación del impacto de errores recurrentes.",
+                        fechas: [{ inicio: 6, fin: 7 }],
+                        encargado: "Gestión de Calidad"
+                    },
+                    {
+                        proceso: "Riesgo 3: Falta de seguimiento a errores",
+                        actividad: "- Creación de un protocolo de respuesta.<br>- Asignación de responsabilidades para resolución de incidencias.<br>- Monitoreo periódico del cumplimiento de medidas correctivas.",
+                        fechas: [{ inicio: 9, fin: 10 }],
+                        encargado: "Soporte Técnico"
+                    }
+                ]
+            },
+            {
+                seccion: "Control de Acceso a Datos Sensibles",
+                riesgos: [
+                    {
+                        proceso: "Riesgo 1: Permisos mal configurados",
+                        actividad: "- Auditoría de configuraciones de acceso en sistemas críticos.<br>- Validación de roles y permisos asignados a usuarios.<br>- Implementación de revisión periódica de permisos.",
+                        fechas: [{ inicio: 2, fin: 3 }, { inicio: 5, fin: 6 }],
+                        encargado: "Equipo de Seguridad TI"
+                    },
+                    {
+                        proceso: "Riesgo 2: Falta de monitoreo en accesos",
+                        actividad: "- Implementación de herramientas de monitoreo en tiempo real.<br>- Revisión de logs de acceso y detección de anomalías.<br>- Establecimiento de alertas automáticas para accesos sospechosos.",
+                        fechas: [{ inicio: 7, fin: 8 }],
+                        encargado: "Administradores de Sistemas"
+                    },
+                    {
+                        proceso: "Riesgo 3: Uso compartido de credenciales",
+                        actividad: "- Capacitación sobre seguridad y uso de credenciales.<br>- Implementación de autenticación multifactor.<br>- Revisión y auditoría de accesos compartidos.",
+                        fechas: [{ inicio: 9, fin: 10 }],
+                        encargado: "Recursos Humanos y TI"
+                    }
+                ]
+            }
+        ];
+
+        function generarSecciones() {
+            const container = document.getElementById("auditSections");
+
+            riesgosData.forEach(seccion => {
+                const sectionDiv = document.createElement("div");
+
+                const title = document.createElement("div");
+                title.classList.add("section-title");
+                title.textContent = ` ${seccion.seccion}`;
+                title.addEventListener("click", () => {
+                    const content = title.nextElementSibling;
+                    content.style.display = content.style.display === "block" ? "none" : "block";
+                });
+
+                const sectionContent = document.createElement("div");
+                sectionContent.classList.add("section-content");
+
+                const table = document.createElement("table");
+                table.innerHTML = `<thead><tr>
+                        <th>Proceso - Auditorías</th>
+                        <th>Actividades</th>
+                        <th>Enero</th><th>Febrero</th><th>Marzo</th><th>Abril</th>
+                        <th>Mayo</th><th>Junio</th><th>Julio</th><th>Agosto</th>
+                        <th>Septiembre</th><th>Octubre</th><th>Noviembre</th><th>Diciembre</th>
+                    </tr></thead>`;
+
+                const tbody = document.createElement("tbody");
+
+                seccion.riesgos.forEach(riesgo => {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `<td>${riesgo.proceso}</td><td>${riesgo.actividad}</td>`;
+                    for (let i = 1; i <= 12; i++) {
+                        const periodo = riesgo.fechas.find(f => i >= f.inicio && i <= f.fin);
+                        tr.innerHTML += `<td>${periodo ? `<span class='fecha'>${riesgo.encargado}</span><div class='flecha' style='width:${(periodo.fin - periodo.inicio + 1) * 100}%'></div>` : ""}</td>`;
+                    }
+                    tbody.appendChild(tr);
+                });
+
+                table.appendChild(tbody);
+                sectionContent.appendChild(table);
+                sectionDiv.appendChild(title);
+                sectionDiv.appendChild(sectionContent);
+                container.appendChild(sectionDiv);
+            });
+        }
+
+        generarSecciones();
+    </script>
+
+</body>
+</html>
